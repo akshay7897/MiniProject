@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import in.ap.entity.Plan;
 
-@Service
+
 public interface PlanService {
 	
 	
