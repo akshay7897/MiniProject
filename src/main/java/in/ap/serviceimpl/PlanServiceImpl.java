@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import in.ap.service.PlanService;
 
 @Service
 public class PlanServiceImpl implements PlanService {
+	
+	Logger logger=LoggerFactory.getLogger(PlanServiceImpl.class);
 
 	@Autowired
 	private PlanRepo planRepo;
@@ -25,14 +29,17 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public Map<Integer, String> getPlan_Categories() {
+		
+		logger.info("getplan_categories Method of service impl is excuting...");
 
 		List<Category_Plan> categories = category_Plan_Repo.findAll();
-
 		Map<Integer, String> cat = new HashMap<>();
 		categories.forEach(category -> {
 			cat.put(category.getCategoryId(), category.getCategoryName());
 		});
+		logger.info("getplan_categories Method of service impl excution done...");
 		return cat;
+
 	}
 
 	@Override
@@ -62,8 +69,10 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public boolean updatePlan(Plan plan) {
-
-		return false;
+		
+		Plan planSave = planRepo.save(plan);
+			
+		return planSave.getPlanId()!=null;
 	}
 
 	@Override
