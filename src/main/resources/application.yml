@@ -1,0 +1,26 @@
+logging:
+  file:
+    name: app.log
+server:
+  port: 9090
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    password: akshay@123
+    url: jdbc:h2:mem:testdb
+    username: akshay
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+      
+plan-api:
+ messages:
+   planCreatedSuccess: plan is created	
+   planCreatedFail: plan creation failed
+   planUpdateSuccess: plan updated successfully
+   planUpdatedFail: plan update fail
+   planDeleteSuccess: plan is deleted
+   planDeletedFail: plan deleted fail
+   planStatusChangedSuccess: plan status changed successfully
+   planStatusChangedFail: plan status changed fialed
+  

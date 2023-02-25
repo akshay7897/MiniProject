@@ -16,16 +16,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import in.ap.constants.AppConstant;
 import in.ap.entity.Plan;
+import in.ap.propeties.AppProperties;
 import in.ap.service.PlanService;
 
 @RestController
 public class PlanController {
+	
+	
 
 	Logger logger = LoggerFactory.getLogger(PlanController.class);
 
-	@Autowired
+	
 	private PlanService planService;
+	
+	public Map<String, String> messages;
+	
+	public AppConstant appConstant;
+	
+	@Autowired
+	public PlanController(PlanService planService,AppProperties appProperties ) {
+		this.planService=planService;
+		this.messages=appProperties.getMessages();
+		
+	}
 
 	@GetMapping("/getCategory")
 	@ResponseStatus(HttpStatus.OK)
@@ -42,13 +57,13 @@ public class PlanController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public String savePlan(@RequestBody Plan plan) {
 
-		String msg = "";
+		String msg =AppConstant.EMPTY_STR;
 		boolean isSave = planService.savePlan(plan);
 		if (isSave) {
-			msg = "plan created.";
+			msg =messages.get(AppConstant.PLAN_CREATED_SUCCESS);
 
 		} else {
-			msg = "plan not created";
+			msg =messages.get(AppConstant.PLAN_CREATED_FAIL);
 		}
 		return msg;
 
@@ -73,12 +88,12 @@ public class PlanController {
 	@PutMapping("/update-plan")
 	@ResponseStatus(HttpStatus.CREATED)
 	public String updatePlan(@RequestBody Plan plan) {
-		String msg = "";
+		String msg = AppConstant.EMPTY_STR;
 		boolean updatePlan = planService.updatePlan(plan);
 		if (updatePlan) {
-			msg = "plan updated..";
+			msg = messages.get(AppConstant.PLAN_UPDATE_SUCCESS);
 		} else {
-			msg = "plan not updated..";
+			msg = messages.get(AppConstant.PLAN_UPDATED_FAIL);
 
 		}
 		return msg;
@@ -87,12 +102,12 @@ public class PlanController {
 	@DeleteMapping("/delete-plan/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public String deletePlan(@PathVariable Integer id) {
-		String msg = "";
+		String msg = AppConstant.EMPTY_STR;
 		boolean deletePlanById = planService.deletePlanById(id);
 		if (deletePlanById) {
-			msg = "plan deleted";
+			msg = messages.get(AppConstant.PLAN_DELETE_SUCCESS);
 		} else {
-			msg = "plan not deleted..";
+			msg = messages.get(AppConstant.PLAN_DELETE_FAIL);
 		}
 		return msg;
 	}
@@ -100,13 +115,13 @@ public class PlanController {
 	@PutMapping("/status-update/{id}/{status}")
 	@ResponseStatus(HttpStatus.OK)
 	public String acticeStatus(@PathVariable Integer id, @PathVariable String status) {
-		String msg = "";
+		String msg = AppConstant.EMPTY_STR;
 
 		boolean active_status = planService.active_status(id, status);
 		if (active_status) {
-			msg = "status updated..";
+			msg = messages.get(AppConstant.PLAN_STATUSCHANGED_SUCCESS);
 		} else {
-			msg = "status not updated..";
+			msg = messages.get(AppConstant.PLAN_STATUSCHANGED_FAIL);
 		}
 
 		return msg;
